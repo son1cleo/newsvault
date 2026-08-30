@@ -179,3 +179,178 @@ main {
   border-top: 1px solid var(--color-rule);
   margin: 2em 0;
 }
+
+/* ============================================================
+   Voice of Bangla (বাংলার কণ্ঠ) — public site theme.
+   Fully separate token namespace (vob-*) from the legacy
+   ink/paper/accent tokens above. /admin now uses this palette too
+   (with a navy sidebar), scoped under .vob so the two never collide
+   with any leftover legacy usage.
+   ============================================================ */
+
+.vob {
+  /* Light (default) */
+  --color-vob-bg: #faf6ef;
+  --color-vob-surface: #ffffff;
+  --color-vob-surface-alt: #f2ece0;
+  --color-vob-ink: #1a1714;
+  --color-vob-muted: #6b6255;
+  --color-vob-faint: #9a9182;
+  --color-vob-border: #e7e0d2;
+  --color-vob-accent: #c8102e;
+  --color-vob-accent-hover: #a30d25;
+  --color-vob-on-accent: #ffffff;
+  --color-vob-ring: #1a1714;
+
+  /* Admin sidebar — navy, independent of light/dark mode. */
+  --color-vob-sidebar: #101d3f;
+  --color-vob-sidebar-hover: #182a56;
+  --color-vob-sidebar-border: #24346b;
+  --color-vob-sidebar-ink: #eef1fb;
+  --color-vob-sidebar-muted: #93a0c9;
+
+  color-scheme: light;
+}
+
+.vob[data-theme="dark"] {
+  --color-vob-bg: #131110;
+  --color-vob-surface: #1c1917;
+  --color-vob-surface-alt: #242019;
+  --color-vob-ink: #f3efe7;
+  --color-vob-muted: #ab9f8e;
+  --color-vob-faint: #766c5e;
+  --color-vob-border: #332d25;
+  --color-vob-accent: #e23f3f;
+  --color-vob-accent-hover: #ef6060;
+  --color-vob-on-accent: #131110;
+  --color-vob-ring: #f3efe7;
+
+  color-scheme: dark;
+}
+
+/* Locale-conditional typefaces: components use the generic
+   font-vob-display / font-vob-sans utilities everywhere; the
+   underlying family switches based on which locale scope
+   they're rendered in. */
+.vob[data-locale="bn"] {
+  --font-vob-display: var(--font-noto-serif-bengali), "Noto Serif Bengali", serif;
+  --font-vob-sans: var(--font-noto-sans-bengali), "Noto Sans Bengali", sans-serif;
+}
+.vob[data-locale="en"] {
+  --font-vob-display: var(--font-playfair-display), Georgia, serif;
+  --font-vob-sans: var(--font-public-sans), system-ui, sans-serif;
+}
+
+@theme inline {
+  --color-vob-bg: var(--color-vob-bg);
+  --color-vob-surface: var(--color-vob-surface);
+  --color-vob-surface-alt: var(--color-vob-surface-alt);
+  --color-vob-ink: var(--color-vob-ink);
+  --color-vob-muted: var(--color-vob-muted);
+  --color-vob-faint: var(--color-vob-faint);
+  --color-vob-border: var(--color-vob-border);
+  --color-vob-accent: var(--color-vob-accent);
+  --color-vob-accent-hover: var(--color-vob-accent-hover);
+  --color-vob-on-accent: var(--color-vob-on-accent);
+  --color-vob-ring: var(--color-vob-ring);
+  --color-vob-sidebar: var(--color-vob-sidebar);
+  --color-vob-sidebar-hover: var(--color-vob-sidebar-hover);
+  --color-vob-sidebar-border: var(--color-vob-sidebar-border);
+  --color-vob-sidebar-ink: var(--color-vob-sidebar-ink);
+  --color-vob-sidebar-muted: var(--color-vob-sidebar-muted);
+
+  --font-vob-display: var(--font-vob-display);
+  --font-vob-sans: var(--font-vob-sans);
+}
+
+.vob {
+  font-family: var(--font-vob-sans);
+  background-color: var(--color-vob-bg);
+  color: var(--color-vob-ink);
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+.vob :focus-visible {
+  outline: 2px solid var(--color-vob-ring);
+  outline-offset: 2px;
+}
+
+.vob ::selection {
+  background-color: var(--color-vob-accent);
+  color: var(--color-vob-on-accent);
+}
+
+/* Breaking-news ticker marquee */
+@keyframes vob-ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.vob-ticker-track {
+  animation: vob-ticker-scroll 28s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .vob-ticker-track {
+    animation: none;
+  }
+}
+
+/* Article body for Voice of Bangla */
+.prose-vob {
+  font-family: var(--font-vob-sans);
+  font-size: 1.25rem;
+  line-height: 1.85;
+  color: var(--color-vob-ink);
+  max-width: 70ch;
+}
+.prose-vob p {
+  margin: 1.3em 0;
+}
+.prose-vob h2 {
+  font-family: var(--font-vob-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 1.6em 0 0.6em;
+}
+.prose-vob h3 {
+  font-family: var(--font-vob-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 1.4em 0 0.5em;
+}
+.prose-vob a {
+  color: var(--color-vob-accent);
+  text-underline-offset: 3px;
+}
+.prose-vob a:hover {
+  color: var(--color-vob-accent-hover);
+}
+.prose-vob blockquote {
+  border-left: 3px solid var(--color-vob-accent);
+  padding-left: 1.1em;
+  margin: 1.4em 0;
+  font-style: italic;
+  color: var(--color-vob-muted);
+}
+.prose-vob img {
+  width: 100%;
+  height: auto;
+  margin: 1.6em 0;
+  border-radius: 6px;
+}
+.prose-vob ul,
+.prose-vob ol {
+  margin: 1.2em 0;
+  padding-left: 1.4em;
+}
+.prose-vob li {
+  margin: 0.4em 0;
+}
+.prose-vob hr {
+  border: none;
+  border-top: 1px solid var(--color-vob-border);
+  margin: 2em 0;
+}

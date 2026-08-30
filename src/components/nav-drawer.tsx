@@ -9,11 +9,25 @@ const VARIANT_STYLES = {
     button: "text-ink hover:text-accent",
     panel: "bg-paper text-ink border-l border-ink",
     close: "text-ink hover:text-accent",
+    backdrop: "bg-ink/50",
   },
   dark: {
     button: "text-paper/70 hover:text-paper",
     panel: "bg-ink text-paper border-l border-paper/20",
     close: "text-paper/70 hover:text-paper",
+    backdrop: "bg-ink/50",
+  },
+  vob: {
+    button: "text-vob-ink hover:text-vob-accent",
+    panel: "bg-vob-surface text-vob-ink border-l border-vob-border",
+    close: "text-vob-ink hover:text-vob-accent",
+    backdrop: "bg-vob-ink/50",
+  },
+  navy: {
+    button: "text-vob-sidebar-muted hover:text-vob-sidebar-ink",
+    panel: "bg-vob-sidebar text-vob-sidebar-ink border-l border-vob-sidebar-border",
+    close: "text-vob-sidebar-muted hover:text-vob-sidebar-ink",
+    backdrop: "bg-vob-sidebar/60",
   },
 } as const;
 
@@ -24,7 +38,7 @@ export function NavDrawer({
   children,
 }: {
   label: string;
-  variant?: "light" | "dark";
+  variant?: keyof typeof VARIANT_STYLES;
   buttonClassName?: string;
   children: React.ReactNode;
 }) {
@@ -74,7 +88,7 @@ export function NavDrawer({
           aria-label={`Close ${label}`}
           tabIndex={open ? 0 : -1}
           onClick={() => setOpen(false)}
-          className="absolute inset-0 cursor-pointer bg-ink/50"
+          className={`absolute inset-0 cursor-pointer ${styles.backdrop}`}
         />
         <div
           role="dialog"
@@ -85,7 +99,11 @@ export function NavDrawer({
           } ${styles.panel}`}
         >
           <div className="flex items-center justify-between px-5 py-5">
-            <span className="font-mono text-xs uppercase tracking-widest opacity-60">{label}</span>
+            <span
+              className={`text-xs uppercase tracking-widest opacity-60 ${variant === "vob" ? "font-vob-sans" : "font-mono"}`}
+            >
+              {label}
+            </span>
             <button
               type="button"
               onClick={() => setOpen(false)}

@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Public_Sans, JetBrains_Mono } from "next/font/google";
+import { getLocale } from "next-intl/server";
+import {
+  Playfair_Display,
+  Public_Sans,
+  JetBrains_Mono,
+  Noto_Serif_Bengali,
+  Noto_Sans_Bengali,
+} from "next/font/google";
 import "./globals.css";
 
-// Matches the brand logo spec (pictures/News Vault logo design.pdf): the
-// masthead wordmark is Playfair Display, black weight, for the high-contrast
-// thick/thin broadsheet nameplate feel.
+// Legacy tokens — still used by /admin's existing ink/paper theme, which is
+// intentionally left as-is by this rebrand (see project notes).
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair-display",
   subsets: ["latin"],
@@ -23,22 +29,38 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500"],
 });
 
+// Voice of Bangla (public site) typefaces.
+const notoSerifBengali = Noto_Serif_Bengali({
+  variable: "--font-noto-serif-bengali",
+  subsets: ["bengali"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const notoSansBengali = Noto_Sans_Bengali({
+  variable: "--font-noto-sans-bengali",
+  subsets: ["bengali"],
+  weight: ["400", "500", "600", "700"],
+});
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "News Vault",
+    default: "Voice of Bangla | বাংলার কণ্ঠ",
     template: "%s",
   },
-  description: "An archive of record. Every story where it belongs — on the day it was dated.",
+  description: "সত্যের পথে, মানুষের পাশে — Voice of Bangla, an independent bilingual news archive.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = await getLocale();
+
   return (
     <html
-      lang="en"
-      className={`${playfairDisplay.variable} ${publicSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      lang={locale}
+      className={`${playfairDisplay.variable} ${publicSans.variable} ${jetbrainsMono.variable} ${notoSerifBengali.variable} ${notoSansBengali.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

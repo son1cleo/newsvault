@@ -1,0 +1,66 @@
+{
+  "site": {
+    "name": "বাংলার কণ্ঠ",
+    "nameEn": "Voice of Bangla",
+    "tagline": "সত্যের পথে, মানুষের পাশে"
+  },
+  "nav": {
+    "home": "প্রচ্ছদ",
+    "national": "জাতীয়",
+    "international": "আন্তর্জাতিক",
+    "politics": "রাজনীতি",
+    "economy": "অর্থনীতি",
+    "sports": "খেলাধুলা",
+    "entertainment": "বিনোদন",
+    "technology": "প্রযুক্তি",
+    "lifestyle": "জীবনযাপন",
+    "archive": "আর্কাইভ"
+  },
+  "header": {
+    "archive": "আর্কাইভ",
+    "searchPlaceholder": "সংবাদ খুঁজুন…",
+    "menu": "মেনু",
+    "toggleTheme": "থিম পরিবর্তন করুন",
+    "language": "English"
+  },
+  "ticker": {
+    "label": "ব্রেকিং"
+  },
+  "tabs": {
+    "latest": "সর্বশেষ",
+    "popular": "জনপ্রিয়"
+  },
+  "sections": {
+    "seeAll": "সব খবর",
+    "mostRead": "সর্বাধিক পঠিত",
+    "newsletter": "নিউজলেটার",
+    "newsletterBody": "প্রতিদিনের গুরুত্বপূর্ণ খবর ইমেইলে পেতে সাবস্ক্রাইব করুন।",
+    "newsletterPlaceholder": "আপনার ইমেইল",
+    "subscribe": "সাবস্ক্রাইব",
+    "weather": "আজকের আবহাওয়া",
+    "gallery": "ছবিতে সংবাদ"
+  },
+  "footer": {
+    "about": "আমাদের সম্পর্কে",
+    "aboutBody": "বাংলার কণ্ঠ একটি স্বাধীন সংবাদ আর্কাইভ, যেখানে প্রতিটি সংবাদ তার প্রকৃত তারিখেই সংরক্ষিত থাকে।",
+    "contact": "যোগাযোগ",
+    "social": "সামাজিক যোগাযোগ",
+    "editorCredit": "প্রধান সম্পাদক: সম্পাদনা পরিষদ, বাংলার কণ্ঠ",
+    "rights": "সর্বস্বত্ব সংরক্ষিত।"
+  },
+  "common": {
+    "by": "প্রতিবেদক",
+    "readMore": "বিস্তারিত পড়ুন",
+    "vault": "আর্কাইভ",
+    "checkVault": "আর্কাইভ দেখুন",
+    "olderDispatches": "পুরনো সংবাদ",
+    "any": "সব",
+    "year": "বছর",
+    "month": "মাস",
+    "day": "দিন",
+    "category": "বিভাগ",
+    "search": "খুঁজুন",
+    "reset": "রিসেট",
+    "noArticles": "কোনো সংবাদ পাওয়া যায়নি।"
+  }
+}

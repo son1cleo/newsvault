@@ -24,17 +24,21 @@ export async function PATCH(
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }
 
-  const data = parsed.data;
+  const { translations, ...shared } = parsed.data;
 
-  if (await slugExists(data.slug, id)) {
+  if (await slugExists(shared.slug, id)) {
     return NextResponse.json({ error: "That slug is already in use." }, { status: 409 });
   }
 
-  const article = await updateArticle(id, {
-    ...data,
-    coverImageUrl: data.coverImageUrl || null,
-    publishedDate: new Date(data.publishedDate),
-  });
+  const article = await updateArticle(
+    id,
+    {
+      ...shared,
+      coverImageUrl: shared.coverImageUrl || null,
+      publishedDate: new Date(shared.publishedDate),
+    },
+    translations
+  );
 
   return NextResponse.json({ article });
 }

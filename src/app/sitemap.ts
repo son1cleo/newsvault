@@ -1,21 +1,28 @@
 import type { MetadataRoute } from "next";
 import { getAllPublishedForSitemap } from "@/lib/articles";
+import { routing } from "@/i18n/routing";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
   const articles = await getAllPublishedForSitemap();
 
-  const staticRoutes: MetadataRoute.Sitemap = [
-    { url: siteUrl, changeFrequency: "monthly", priority: 1 },
-    { url: `${siteUrl}/vault`, changeFrequency: "daily", priority: 0.9 },
-  ];
+  const entries: MetadataRoute.Sitemap = [];
 
-  const articleRoutes: MetadataRoute.Sitemap = articles.map((article) => ({
-    url: `${siteUrl}/article/${article.slug}`,
-    lastModified: article.publishedDate,
-    changeFrequency: "never",
-    priority: 0.7,
-  }));
+  for (const locale of routing.locales) {
+    entries.push(
+      { url: `${siteUrl}/${locale}`, changeFrequency: "hourly", priority: 1 },
+      { url: `${siteUrl}/${locale}/vault`, changeFrequency: "hourly", priority: 0.9 }
+    );
 
-  return [...staticRoutes, ...articleRoutes];
+    for (const article of articles) {
+      entries.push({
+        url: `${siteUrl}/${locale}/article/${article.slug}`,
+        lastModified: article.publishedDate,
+        changeFrequency: "never",
+        priority: 0.7,
+      });
+    }
+  }
+
+  return entries;
 }

@@ -19,8 +19,8 @@ function ToolbarButton({ onClick, active, label, children }: ToolbarButtonProps)
       onClick={onClick}
       aria-label={label}
       aria-pressed={active}
-      className={`cursor-pointer border border-rule-strong px-2.5 py-1.5 font-mono text-xs uppercase tracking-wide transition-colors hover:bg-paper-deep ${
-        active ? "bg-ink text-paper hover:bg-ink" : "bg-paper text-ink"
+      className={`cursor-pointer border border-vob-border px-2.5 py-1.5 font-mono text-xs uppercase tracking-wide transition-colors hover:bg-vob-surface-alt ${
+        active ? "bg-vob-ink text-vob-bg hover:bg-vob-ink" : "bg-vob-bg text-vob-ink"
       }`}
     >
       {children}
@@ -41,7 +41,7 @@ export function TiptapEditor({
     immediatelyRender: false,
     editorProps: {
       attributes: {
-        class: "prose-vault min-h-[320px] focus:outline-none",
+        class: "prose-vob min-h-[320px] focus:outline-none",
       },
     },
     onUpdate: ({ editor }) => {
@@ -69,15 +69,15 @@ export function TiptapEditor({
 
   if (!editor) {
     return (
-      <div className="min-h-[320px] border border-rule-strong bg-paper px-4 py-3 text-ink-muted">
+      <div className="min-h-[320px] border border-vob-border bg-vob-bg px-4 py-3 text-vob-muted">
         Loading editor…
       </div>
     );
   }
 
   return (
-    <div className="border border-rule-strong bg-paper">
-      <div className="flex flex-wrap gap-1.5 border-b border-rule-strong p-2">
+    <div className="border border-vob-border bg-vob-bg">
+      <div className="flex flex-wrap gap-1.5 border-b border-vob-border p-2">
         <ToolbarButton
           label="Bold"
           active={editor.isActive("bold")}

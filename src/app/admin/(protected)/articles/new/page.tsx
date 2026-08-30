@@ -11,7 +11,7 @@ export default function NewArticlePage() {
           { label: "New" },
         ]}
       />
-      <h1 className="mt-2 font-display text-3xl font-bold text-ink">New Article</h1>
+      <h1 className="mt-2 font-vob-display text-3xl font-bold text-vob-ink">New Article</h1>
       <div className="mt-8">
         <ArticleEditorForm />
       </div>

@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import type { Article } from "@/db/schema";
+import type { AdminArticleListItem } from "@/lib/admin-articles";
 import { formatShortDate } from "@/lib/format";
 
-export function ArticlesTable({ articles }: { articles: Article[] }) {
+export function ArticlesTable({ articles }: { articles: AdminArticleListItem[] }) {
   const router = useRouter();
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [deleting, setDeleting] = useState(false);
@@ -49,15 +49,15 @@ export function ArticlesTable({ articles }: { articles: Article[] }) {
   return (
     <div>
       {selected.size > 0 && (
-        <div className="mb-3 flex items-center justify-between border border-ink bg-paper-raised px-4 py-2.5">
-          <span className="font-mono text-sm uppercase tracking-widest text-ink">
+        <div className="mb-3 flex items-center justify-between border border-vob-ink bg-vob-surface px-4 py-2.5">
+          <span className="font-mono text-sm uppercase tracking-widest text-vob-ink">
             {selected.size} selected
           </span>
           <button
             type="button"
             onClick={deleteSelected}
             disabled={deleting}
-            className="cursor-pointer font-mono text-sm uppercase tracking-widest text-accent hover:text-accent-hover transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+            className="cursor-pointer font-mono text-sm uppercase tracking-widest text-vob-accent hover:text-vob-accent-hover transition-colors disabled:cursor-not-allowed disabled:opacity-50"
           >
             {deleting ? "Deleting…" : "Delete Selected"}
           </button>
@@ -67,7 +67,7 @@ export function ArticlesTable({ articles }: { articles: Article[] }) {
       <div className="overflow-x-auto">
         <table className="w-full border-collapse text-left">
           <thead>
-            <tr className="border-b-2 border-ink font-mono text-xs uppercase tracking-widest text-ink-muted">
+            <tr className="border-b-2 border-vob-ink font-mono text-xs uppercase tracking-widest text-vob-muted">
               <th className="w-10 py-2.5 pr-2">
                 <input
                   type="checkbox"
@@ -88,13 +88,13 @@ export function ArticlesTable({ articles }: { articles: Article[] }) {
           <tbody>
             {articles.length === 0 ? (
               <tr>
-                <td colSpan={7} className="py-8 text-center text-ink-muted">
+                <td colSpan={7} className="py-8 text-center text-vob-muted">
                   No articles found.
                 </td>
               </tr>
             ) : (
               articles.map((article) => (
-                <tr key={article.id} className="border-b border-rule align-top">
+                <tr key={article.id} className="border-b border-vob-border align-top">
                   <td className="py-3 pr-2">
                     <input
                       type="checkbox"
@@ -105,22 +105,22 @@ export function ArticlesTable({ articles }: { articles: Article[] }) {
                     />
                   </td>
                   <td className="py-3 pr-4">
-                    <p className="font-display text-lg font-semibold text-ink">{article.title}</p>
-                    <p className="mt-0.5 max-w-md truncate text-[15px] text-ink-muted">{article.excerpt}</p>
+                    <p className="font-vob-display text-lg font-semibold text-vob-ink">{article.title}</p>
+                    <p className="mt-0.5 max-w-md truncate text-[15px] text-vob-muted">{article.excerpt}</p>
                   </td>
-                  <td className="py-3 pr-4 text-base text-ink-muted">{article.author}</td>
+                  <td className="py-3 pr-4 text-base text-vob-muted">{article.author}</td>
                   <td className="py-3 pr-4">
-                    <span className="border border-rule-strong px-2 py-0.5 font-mono text-xs uppercase tracking-widest text-ink-muted">
+                    <span className="border border-vob-border px-2 py-0.5 font-mono text-xs uppercase tracking-widest text-vob-muted">
                       {article.category}
                     </span>
                   </td>
-                  <td className="py-3 pr-4 whitespace-nowrap text-base text-ink-muted">
+                  <td className="py-3 pr-4 whitespace-nowrap text-base text-vob-muted">
                     {formatShortDate(article.publishedDate)}
                   </td>
                   <td className="py-3 pr-4">
                     <span
                       className={`font-mono text-xs uppercase tracking-widest ${
-                        article.status === "published" ? "text-accent" : "text-ink-faint"
+                        article.status === "published" ? "text-vob-accent" : "text-vob-faint"
                       }`}
                     >
                       {article.status}
@@ -130,14 +130,14 @@ export function ArticlesTable({ articles }: { articles: Article[] }) {
                     <div className="flex justify-end gap-4">
                       <Link
                         href={`/admin/articles/${article.id}/edit`}
-                        className="font-mono text-xs uppercase tracking-widest text-ink hover:text-accent transition-colors"
+                        className="font-mono text-xs uppercase tracking-widest text-vob-ink hover:text-vob-accent transition-colors"
                       >
                         Edit
                       </Link>
                       <button
                         type="button"
                         onClick={() => deleteOne(article.id, article.title)}
-                        className="cursor-pointer font-mono text-xs uppercase tracking-widest text-accent hover:text-accent-hover transition-colors"
+                        className="cursor-pointer font-mono text-xs uppercase tracking-widest text-vob-accent hover:text-vob-accent-hover transition-colors"
                       >
                         Delete
                       </button>

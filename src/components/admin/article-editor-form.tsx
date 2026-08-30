@@ -7,6 +7,7 @@ import { TiptapEditor } from "@/components/admin/tiptap-editor";
 import { slugify } from "@/lib/slug";
 import { uploadImageFile } from "@/lib/upload-client";
 import type { Article } from "@/db/schema";
+import type { ArticleTranslations } from "@/lib/admin-articles";
 
 const EMPTY_DOC: JSONContent = { type: "doc", content: [{ type: "paragraph" }] };
 
@@ -18,14 +19,27 @@ function todayInputValue() {
   return toDateInputValue(new Date());
 }
 
-export function ArticleEditorForm({ article }: { article?: Article }) {
+type EditableArticle = Article & { translations: ArticleTranslations };
+
+export function ArticleEditorForm({ article }: { article?: EditableArticle }) {
   const router = useRouter();
   const isEditing = Boolean(article);
 
-  const [title, setTitle] = useState(article?.title ?? "");
+  const [activeLocale, setActiveLocale] = useState<"en" | "bn">("en");
+
+  const [enTitle, setEnTitle] = useState(article?.translations.en.title ?? "");
+  const [enExcerpt, setEnExcerpt] = useState(article?.translations.en.excerpt ?? "");
+  const [enBody, setEnBody] = useState<JSONContent>(
+    (article?.translations.en.body as JSONContent) ?? EMPTY_DOC
+  );
+  const [bnTitle, setBnTitle] = useState(article?.translations.bn.title ?? "");
+  const [bnExcerpt, setBnExcerpt] = useState(article?.translations.bn.excerpt ?? "");
+  const [bnBody, setBnBody] = useState<JSONContent>(
+    (article?.translations.bn.body as JSONContent) ?? EMPTY_DOC
+  );
+
   const [slug, setSlug] = useState(article?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(isEditing);
-  const [excerpt, setExcerpt] = useState(article?.excerpt ?? "");
   const [category, setCategory] = useState(article?.category ?? "");
   const [author, setAuthor] = useState(article?.author ?? "");
   const [coverImageUrl, setCoverImageUrl] = useState(article?.coverImageUrl ?? "");
@@ -33,7 +47,6 @@ export function ArticleEditorForm({ article }: { article?: Article }) {
     article ? toDateInputValue(article.publishedDate) : todayInputValue()
   );
   const [status, setStatus] = useState<"draft" | "published">(article?.status ?? "draft");
-  const [body, setBody] = useState<JSONContent>((article?.body as JSONContent) ?? EMPTY_DOC);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [coverUploading, setCoverUploading] = useState(false);
@@ -55,8 +68,8 @@ export function ArticleEditorForm({ article }: { article?: Article }) {
     }
   }
 
-  function handleTitleChange(value: string) {
-    setTitle(value);
+  function handleEnTitleChange(value: string) {
+    setEnTitle(value);
     if (!slugTouched) setSlug(slugify(value));
   }
 
@@ -66,15 +79,16 @@ export function ArticleEditorForm({ article }: { article?: Article }) {
     setError(null);
 
     const payload = {
-      title,
       slug,
-      excerpt,
-      body,
       category,
       author,
       coverImageUrl: coverImageUrl || null,
       publishedDate: new Date(`${publishedDate}T00:00:00.000Z`).toISOString(),
       status,
+      translations: {
+        en: { title: enTitle, excerpt: enExcerpt, body: enBody },
+        bn: { title: bnTitle, excerpt: bnExcerpt, body: bnBody },
+      },
     };
 
     const url = isEditing ? `/api/admin/articles/${article!.id}` : "/api/admin/articles";
@@ -103,21 +117,95 @@ export function ArticleEditorForm({ article }: { article?: Article }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <label htmlFor="title" className="block font-mono text-xs uppercase tracking-widest text-ink-muted">
-          Title
-        </label>
-        <input
-          id="title"
-          required
-          value={title}
-          onChange={(e) => handleTitleChange(e.target.value)}
-          className="mt-1 w-full border border-rule-strong bg-paper px-3 py-2 font-display text-xl text-ink focus:border-ink focus:outline-none"
-        />
+      <div className="flex gap-2 border-b-2 border-vob-ink font-mono text-xs uppercase tracking-widest">
+        {(["en", "bn"] as const).map((locale) => (
+          <button
+            key={locale}
+            type="button"
+            onClick={() => setActiveLocale(locale)}
+            className={`cursor-pointer border-b-2 px-4 py-2.5 -mb-0.5 transition-colors ${
+              activeLocale === locale
+                ? "border-vob-accent text-vob-ink"
+                : "border-transparent text-vob-muted hover:text-vob-ink"
+            }`}
+          >
+            {locale === "en" ? "English" : "বাংলা (Bangla)"}
+          </button>
+        ))}
+      </div>
+
+      <div className={activeLocale === "en" ? "space-y-6" : "hidden space-y-6"}>
+        <div>
+          <label htmlFor="en-title" className="block font-mono text-xs uppercase tracking-widest text-vob-muted">
+            Title (English)
+          </label>
+          <input
+            id="en-title"
+            required={activeLocale === "en"}
+            value={enTitle}
+            onChange={(e) => handleEnTitleChange(e.target.value)}
+            className="mt-1 w-full border border-vob-border bg-vob-bg px-3 py-2 font-vob-display text-xl text-vob-ink focus:border-vob-accent focus:outline-none"
+          />
+        </div>
+        <div>
+          <label htmlFor="en-excerpt" className="block font-mono text-xs uppercase tracking-widest text-vob-muted">
+            Excerpt (English)
+          </label>
+          <textarea
+            id="en-excerpt"
+            required={activeLocale === "en"}
+            rows={2}
+            value={enExcerpt}
+            onChange={(e) => setEnExcerpt(e.target.value)}
+            className="mt-1 w-full border border-vob-border bg-vob-bg px-3 py-2 text-vob-ink focus:border-vob-accent focus:outline-none"
+          />
+        </div>
+        <div>
+          <span className="block font-mono text-xs uppercase tracking-widest text-vob-muted">Body (English)</span>
+          <div className="mt-1">
+            <TiptapEditor content={enBody} onChange={setEnBody} />
+          </div>
+        </div>
+      </div>
+
+      <div className={activeLocale === "bn" ? "space-y-6" : "hidden space-y-6"}>
+        <div>
+          <label htmlFor="bn-title" className="block font-mono text-xs uppercase tracking-widest text-vob-muted">
+            Title (Bangla)
+          </label>
+          <input
+            id="bn-title"
+            required={activeLocale === "bn"}
+            value={bnTitle}
+            onChange={(e) => setBnTitle(e.target.value)}
+            lang="bn"
+            className="mt-1 w-full border border-vob-border bg-vob-bg px-3 py-2 font-vob-display text-xl text-vob-ink focus:border-vob-accent focus:outline-none"
+          />
+        </div>
+        <div>
+          <label htmlFor="bn-excerpt" className="block font-mono text-xs uppercase tracking-widest text-vob-muted">
+            Excerpt (Bangla)
+          </label>
+          <textarea
+            id="bn-excerpt"
+            required={activeLocale === "bn"}
+            rows={2}
+            value={bnExcerpt}
+            onChange={(e) => setBnExcerpt(e.target.value)}
+            lang="bn"
+            className="mt-1 w-full border border-vob-border bg-vob-bg px-3 py-2 text-vob-ink focus:border-vob-accent focus:outline-none"
+          />
+        </div>
+        <div>
+          <span className="block font-mono text-xs uppercase tracking-widest text-vob-muted">Body (Bangla)</span>
+          <div className="mt-1">
+            <TiptapEditor content={bnBody} onChange={setBnBody} />
+          </div>
+        </div>
       </div>
 
       <div>
-        <label htmlFor="slug" className="block font-mono text-xs uppercase tracking-widest text-ink-muted">
+        <label htmlFor="slug" className="block font-mono text-xs uppercase tracking-widest text-vob-muted">
           Slug
         </label>
         <input
@@ -128,39 +216,27 @@ export function ArticleEditorForm({ article }: { article?: Article }) {
             setSlugTouched(true);
             setSlug(slugify(e.target.value));
           }}
-          className="mt-1 w-full border border-rule-strong bg-paper px-3 py-2 font-mono text-sm text-ink focus:border-ink focus:outline-none"
+          className="mt-1 w-full border border-vob-border bg-vob-bg px-3 py-2 font-mono text-sm text-vob-ink focus:border-vob-accent focus:outline-none"
         />
-      </div>
-
-      <div>
-        <label htmlFor="excerpt" className="block font-mono text-xs uppercase tracking-widest text-ink-muted">
-          Excerpt
-        </label>
-        <textarea
-          id="excerpt"
-          required
-          rows={2}
-          value={excerpt}
-          onChange={(e) => setExcerpt(e.target.value)}
-          className="mt-1 w-full border border-rule-strong bg-paper px-3 py-2 text-ink focus:border-ink focus:outline-none"
-        />
+        <p className="mt-1 text-xs text-vob-faint">Shared across both languages — generated from the English title.</p>
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div>
-          <label htmlFor="category" className="block font-mono text-xs uppercase tracking-widest text-ink-muted">
-            Category
+          <label htmlFor="category" className="block font-mono text-xs uppercase tracking-widest text-vob-muted">
+            Category (slug)
           </label>
           <input
             id="category"
             required
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="mt-1 w-full border border-rule-strong bg-paper px-3 py-2 text-ink focus:border-ink focus:outline-none"
+            placeholder="national, sports, technology…"
+            className="mt-1 w-full border border-vob-border bg-vob-bg px-3 py-2 text-vob-ink focus:border-vob-accent focus:outline-none"
           />
         </div>
         <div>
-          <label htmlFor="author" className="block font-mono text-xs uppercase tracking-widest text-ink-muted">
+          <label htmlFor="author" className="block font-mono text-xs uppercase tracking-widest text-vob-muted">
             Author
           </label>
           <input
@@ -168,14 +244,14 @@ export function ArticleEditorForm({ article }: { article?: Article }) {
             required
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
-            className="mt-1 w-full border border-rule-strong bg-paper px-3 py-2 text-ink focus:border-ink focus:outline-none"
+            className="mt-1 w-full border border-vob-border bg-vob-bg px-3 py-2 text-vob-ink focus:border-vob-accent focus:outline-none"
           />
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div>
-          <label htmlFor="publishedDate" className="block font-mono text-xs uppercase tracking-widest text-ink-muted">
+          <label htmlFor="publishedDate" className="block font-mono text-xs uppercase tracking-widest text-vob-muted">
             Published Date (archive date)
           </label>
           <input
@@ -185,15 +261,15 @@ export function ArticleEditorForm({ article }: { article?: Article }) {
             max={todayInputValue()}
             value={publishedDate}
             onChange={(e) => setPublishedDate(e.target.value)}
-            className="mt-1 w-full border border-rule-strong bg-paper px-3 py-2 text-ink focus:border-ink focus:outline-none"
+            className="mt-1 w-full border border-vob-border bg-vob-bg px-3 py-2 text-vob-ink focus:border-vob-accent focus:outline-none"
           />
-          <p className="mt-1 text-xs text-ink-faint">
+          <p className="mt-1 text-xs text-vob-faint">
             This is the display date — where the article slots into the archive. It can be any
             date up to today.
           </p>
         </div>
         <div>
-          <label htmlFor="coverImageUrl" className="block font-mono text-xs uppercase tracking-widest text-ink-muted">
+          <label htmlFor="coverImageUrl" className="block font-mono text-xs uppercase tracking-widest text-vob-muted">
             Cover Image
           </label>
           <div className="mt-1 flex gap-2">
@@ -203,9 +279,9 @@ export function ArticleEditorForm({ article }: { article?: Article }) {
               placeholder="https://…"
               value={coverImageUrl ?? ""}
               onChange={(e) => setCoverImageUrl(e.target.value)}
-              className="w-full border border-rule-strong bg-paper px-3 py-2 text-ink focus:border-ink focus:outline-none"
+              className="w-full border border-vob-border bg-vob-bg px-3 py-2 text-vob-ink focus:border-vob-accent focus:outline-none"
             />
-            <label className="flex cursor-pointer items-center whitespace-nowrap border border-ink px-3 py-2 font-mono text-xs uppercase tracking-widest text-ink transition-colors hover:bg-paper-deep">
+            <label className="flex cursor-pointer items-center whitespace-nowrap border border-vob-ink px-3 py-2 font-mono text-xs uppercase tracking-widest text-vob-ink transition-colors hover:bg-vob-surface-alt">
               {coverUploading ? "Uploading…" : "Choose File"}
               <input
                 type="file"
@@ -216,26 +292,19 @@ export function ArticleEditorForm({ article }: { article?: Article }) {
               />
             </label>
           </div>
-          {coverUploadError && <p className="mt-1 text-xs text-accent">{coverUploadError}</p>}
+          {coverUploadError && <p className="mt-1 text-xs text-vob-accent">{coverUploadError}</p>}
           {coverImageUrl && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={coverImageUrl}
               alt=""
-              className="mt-2 h-24 w-auto border border-rule object-cover"
+              className="mt-2 h-24 w-auto border border-vob-border object-cover"
             />
           )}
         </div>
       </div>
 
-      <div>
-        <span className="block font-mono text-xs uppercase tracking-widest text-ink-muted">Body</span>
-        <div className="mt-1">
-          <TiptapEditor content={body} onChange={setBody} />
-        </div>
-      </div>
-
-      <div className="flex items-center justify-between border-t-2 border-ink pt-6">
+      <div className="flex items-center justify-between border-t-2 border-vob-ink pt-6">
         <div className="flex items-center gap-4 font-mono text-xs uppercase tracking-widest">
           <label className="flex cursor-pointer items-center gap-2">
             <input
@@ -260,14 +329,14 @@ export function ArticleEditorForm({ article }: { article?: Article }) {
         <button
           type="submit"
           disabled={saving}
-          className="cursor-pointer border-2 border-ink bg-ink px-6 py-3 font-mono text-sm uppercase tracking-widest text-paper transition-colors hover:bg-transparent hover:text-ink disabled:cursor-not-allowed disabled:opacity-50"
+          className="cursor-pointer bg-vob-accent px-6 py-3 font-mono text-sm uppercase tracking-widest text-vob-on-accent transition-colors hover:bg-vob-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
         >
           {saving ? "Saving…" : isEditing ? "Save Changes" : "Create Article"}
         </button>
       </div>
 
       {error && (
-        <p role="alert" className="text-sm text-accent">
+        <p role="alert" className="text-sm text-vob-accent">
           {error}
         </p>
       )}

@@ -37,7 +37,7 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="mt-6 space-y-4">
       <div>
-        <label htmlFor="email" className="block font-mono text-xs uppercase tracking-widest text-ink-muted">
+        <label htmlFor="email" className="block font-mono text-xs uppercase tracking-widest text-vob-muted">
           Email
         </label>
         <input
@@ -47,11 +47,11 @@ export function LoginForm() {
           autoComplete="username"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-1 w-full border border-rule-strong bg-paper px-3 py-2 text-ink focus:border-ink focus:outline-none"
+          className="mt-1 w-full border border-vob-border bg-vob-bg px-3 py-2 text-vob-ink focus:border-vob-accent focus:outline-none"
         />
       </div>
       <div>
-        <label htmlFor="password" className="block font-mono text-xs uppercase tracking-widest text-ink-muted">
+        <label htmlFor="password" className="block font-mono text-xs uppercase tracking-widest text-vob-muted">
           Password
         </label>
         <input
@@ -61,12 +61,12 @@ export function LoginForm() {
           autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mt-1 w-full border border-rule-strong bg-paper px-3 py-2 text-ink focus:border-ink focus:outline-none"
+          className="mt-1 w-full border border-vob-border bg-vob-bg px-3 py-2 text-vob-ink focus:border-vob-accent focus:outline-none"
         />
       </div>
 
       {error && (
-        <p role="alert" className="text-sm text-accent">
+        <p role="alert" className="text-sm text-vob-accent">
           {error}
         </p>
       )}
@@ -74,7 +74,7 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full cursor-pointer border-2 border-ink bg-ink px-4 py-3 font-mono text-sm uppercase tracking-widest text-paper transition-colors hover:bg-transparent hover:text-ink disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full cursor-pointer bg-vob-accent px-4 py-3 font-mono text-sm uppercase tracking-widest text-vob-on-accent transition-colors hover:bg-vob-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
       >
         {loading ? "Signing in…" : "Sign In"}
       </button>

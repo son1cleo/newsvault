@@ -1,16 +1,23 @@
-import { index, integer, jsonb, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  index,
+  integer,
+  jsonb,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  unique,
+} from "drizzle-orm/pg-core";
 
 export const articleStatus = pgEnum("article_status", ["draft", "published"]);
+export const localeEnum = pgEnum("locale", ["bn", "en"]);
 
 export const articles = pgTable(
   "articles",
   {
     id: integer("id").generatedAlwaysAsIdentity().primaryKey(),
-    title: text("title").notNull(),
     slug: text("slug").notNull().unique(),
-    excerpt: text("excerpt").notNull(),
-    // TipTap JSON document. Rendered to HTML on read via @tiptap/html.
-    body: jsonb("body").notNull(),
+    // title/excerpt/body live in `articleTranslations`, keyed by locale.
     category: text("category").notNull(),
     coverImageUrl: text("cover_image_url"),
     // Admin-assigned DISPLAY date. All public sorting/filtering uses this.
@@ -27,5 +34,29 @@ export const articles = pgTable(
   ]
 );
 
+// Per-locale content for an article (Voice of Bangla bilingual rebrand).
+// title/excerpt/body live here, keyed by locale; shared fields (slug,
+// category, author, cover image, published_date, status) stay on
+// `articles` and are unaffected by locale.
+export const articleTranslations = pgTable(
+  "article_translations",
+  {
+    id: integer("id").generatedAlwaysAsIdentity().primaryKey(),
+    articleId: integer("article_id")
+      .notNull()
+      .references(() => articles.id, { onDelete: "cascade" }),
+    locale: localeEnum("locale").notNull(),
+    title: text("title").notNull(),
+    excerpt: text("excerpt").notNull(),
+    body: jsonb("body").notNull(),
+  },
+  (table) => [
+    unique("article_translations_article_locale_unique").on(table.articleId, table.locale),
+    index("article_translations_article_id_idx").on(table.articleId),
+  ]
+);
+
 export type Article = typeof articles.$inferSelect;
 export type NewArticle = typeof articles.$inferInsert;
+export type ArticleTranslation = typeof articleTranslations.$inferSelect;
+export type NewArticleTranslation = typeof articleTranslations.$inferInsert;

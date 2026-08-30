@@ -1,0 +1,66 @@
+{
+  "site": {
+    "name": "Voice of Bangla",
+    "nameEn": "Voice of Bangla",
+    "tagline": "On the path of truth, beside the people"
+  },
+  "nav": {
+    "home": "Home",
+    "national": "National",
+    "international": "International",
+    "politics": "Politics",
+    "economy": "Economy",
+    "sports": "Sports",
+    "entertainment": "Entertainment",
+    "technology": "Technology",
+    "lifestyle": "Lifestyle",
+    "archive": "Archive"
+  },
+  "header": {
+    "archive": "Archive",
+    "searchPlaceholder": "Search news…",
+    "menu": "Menu",
+    "toggleTheme": "Toggle theme",
+    "language": "বাংলা"
+  },
+  "ticker": {
+    "label": "Breaking"
+  },
+  "tabs": {
+    "latest": "Latest",
+    "popular": "Popular"
+  },
+  "sections": {
+    "seeAll": "See All",
+    "mostRead": "Most Read",
+    "newsletter": "Newsletter",
+    "newsletterBody": "Subscribe to get the day's important news by email.",
+    "newsletterPlaceholder": "Your email",
+    "subscribe": "Subscribe",
+    "weather": "Today's Weather",
+    "gallery": "In Pictures"
+  },
+  "footer": {
+    "about": "About Us",
+    "aboutBody": "Voice of Bangla is an independent news archive, where every story is preserved on its real date.",
+    "contact": "Contact",
+    "social": "Follow Us",
+    "editorCredit": "Editor-in-Chief: Editorial Board, Voice of Bangla",
+    "rights": "All rights reserved."
+  },
+  "common": {
+    "by": "By",
+    "readMore": "Read More",
+    "vault": "Archive",
+    "checkVault": "Check the Archive",
+    "olderDispatches": "Older Stories",
+    "any": "Any",
+    "year": "Year",
+    "month": "Month",
+    "day": "Day",
+    "category": "Category",
+    "search": "Search",
+    "reset": "Reset",
+    "noArticles": "No articles found."
+  }
+}
