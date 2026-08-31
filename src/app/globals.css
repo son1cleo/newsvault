@@ -181,7 +181,7 @@ main {
 }
 
 /* ============================================================
-   Voice of Bangla (বাংলার কণ্ঠ) — public site theme.
+   Voice of Time (সময়কণ্ঠ) — public site theme.
    Fully separate token namespace (vob-*) from the legacy
    ink/paper/accent tokens above. /admin now uses this palette too
    (with a navy sidebar), scoped under .vob so the two never collide
@@ -298,7 +298,7 @@ main {
   }
 }
 
-/* Article body for Voice of Bangla */
+/* Article body for Voice of Time */
 .prose-vob {
   font-family: var(--font-vob-sans);
   font-size: 1.25rem;
@@ -346,8 +346,17 @@ main {
   margin: 1.2em 0;
   padding-left: 1.4em;
 }
+.prose-vob ul {
+  list-style: disc;
+}
+.prose-vob ol {
+  list-style: decimal;
+}
 .prose-vob li {
   margin: 0.4em 0;
+}
+.prose-vob li::marker {
+  color: var(--color-vob-muted);
 }
 .prose-vob hr {
   border: none;

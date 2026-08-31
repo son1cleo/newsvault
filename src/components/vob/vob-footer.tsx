@@ -37,7 +37,7 @@ export async function VobFooter() {
           <p className="font-vob-sans text-sm font-semibold uppercase tracking-widest text-vob-muted">
             {footer("contact")}
           </p>
-          <p className="mt-3 font-vob-sans text-base text-vob-ink">contact@voiceofbangla.example</p>
+          <p className="mt-3 font-vob-sans text-base text-vob-ink">contact@voiceoftime.example</p>
           <p className="mt-4 font-vob-sans text-sm font-semibold uppercase tracking-widest text-vob-muted">
             {footer("social")}
           </p>

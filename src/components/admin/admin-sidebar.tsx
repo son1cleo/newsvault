@@ -13,10 +13,10 @@ export function AdminSidebar() {
     <aside className="sticky top-0 hidden h-screen w-64 flex-shrink-0 flex-col self-start bg-vob-sidebar text-vob-sidebar-ink lg:flex">
       <div className="flex items-center gap-3 px-6 py-6">
         <span className="flex h-9 w-9 items-center justify-center border border-vob-sidebar-ink/40 font-vob-display text-sm font-bold">
-          VB
+          VT
         </span>
         <div>
-          <p className="font-vob-display text-sm font-bold uppercase tracking-wide">Voice of Bangla</p>
+          <p className="font-vob-display text-sm font-bold uppercase tracking-wide">Voice of Time</p>
           <p className="font-mono text-[10px] uppercase tracking-widest text-vob-sidebar-muted">Admin</p>
         </div>
       </div>
@@ -51,7 +51,7 @@ export function AdminSidebar() {
       </div>
 
       <p className="border-t border-vob-sidebar-border px-6 py-4 font-mono text-[10px] uppercase tracking-widest text-vob-sidebar-muted">
-        &copy; Voice of Bangla {new Date().getFullYear()}
+        &copy; Voice of Time {new Date().getFullYear()}
       </p>
     </aside>
   );

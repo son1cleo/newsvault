@@ -61,7 +61,7 @@ export default async function ArticlePage({
     image: article.coverImageUrl ? [article.coverImageUrl] : undefined,
     articleSection: categoryLabel(article.category, locale),
     mainEntityOfPage: `${siteUrl}/${locale}/article/${article.slug}`,
-    publisher: { "@type": "Organization", name: "Voice of Bangla" },
+    publisher: { "@type": "Organization", name: "Voice of Time" },
   };
 
   const year = article.publishedDate.getUTCFullYear();

@@ -36,7 +36,7 @@ export async function middleware(request: NextRequest) {
     return adminGuard(request);
   }
 
-  // Everything else (the public Voice of Bangla site) gets locale routing.
+  // Everything else (the public Voice of Time site) gets locale routing.
   return intlMiddleware(request);
 }
 

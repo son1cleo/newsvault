@@ -184,7 +184,7 @@ export async function getCategories() {
   return rows.map((r) => r.category).sort();
 }
 
-// --- Homepage-specific queries (Voice of Bangla) ---
+// --- Homepage-specific queries (Voice of Time) ---
 
 export async function getRecentArticles(
   locale: string,

@@ -29,7 +29,7 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500"],
 });
 
-// Voice of Bangla (public site) typefaces.
+// Voice of Time (public site) typefaces.
 const notoSerifBengali = Noto_Serif_Bengali({
   variable: "--font-noto-serif-bengali",
   subsets: ["bengali"],
@@ -47,10 +47,13 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Voice of Bangla | বাংলার কণ্ঠ",
+    default: "Voice of Time | সময়কণ্ঠ",
     template: "%s",
   },
-  description: "সত্যের পথে, মানুষের পাশে — Voice of Bangla, an independent bilingual news archive.",
+  description: "সত্যের পথে, মানুষের পাশে — Voice of Time, an independent bilingual news archive.",
+  openGraph: {
+    siteName: "Voice of Time",
+  },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

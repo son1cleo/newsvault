@@ -31,7 +31,7 @@ export async function VobHeader() {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <Link href="/" className="flex items-center gap-3">
             <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center bg-vob-accent font-vob-display text-xl font-bold text-vob-on-accent">
-              ক
+              স
             </span>
             <span>
               <span className="block font-vob-display text-3xl font-bold leading-tight text-vob-ink sm:text-4xl">

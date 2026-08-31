@@ -34,7 +34,7 @@ export const articles = pgTable(
   ]
 );
 
-// Per-locale content for an article (Voice of Bangla bilingual rebrand).
+// Per-locale content for an article (Voice of Time bilingual rebrand).
 // title/excerpt/body live here, keyed by locale; shared fields (slug,
 // category, author, cover image, published_date, status) stay on
 // `articles` and are unaffected by locale.

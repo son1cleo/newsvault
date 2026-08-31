@@ -5,6 +5,7 @@ import { useState, type FormEvent } from "react";
 import type { JSONContent } from "@tiptap/core";
 import { TiptapEditor } from "@/components/admin/tiptap-editor";
 import { slugify } from "@/lib/slug";
+import { CATEGORY_SLUGS, categoryLabel, type CategorySlug } from "@/lib/category-labels";
 import { uploadImageFile } from "@/lib/upload-client";
 import type { Article } from "@/db/schema";
 import type { ArticleTranslations } from "@/lib/admin-articles";
@@ -41,6 +42,9 @@ export function ArticleEditorForm({ article }: { article?: EditableArticle }) {
   const [slug, setSlug] = useState(article?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(isEditing);
   const [category, setCategory] = useState(article?.category ?? "");
+  const [isCustomCategory, setIsCustomCategory] = useState(
+    Boolean(article && !CATEGORY_SLUGS.includes(article.category as CategorySlug))
+  );
   const [author, setAuthor] = useState(article?.author ?? "");
   const [coverImageUrl, setCoverImageUrl] = useState(article?.coverImageUrl ?? "");
   const [publishedDate, setPublishedDate] = useState(
@@ -224,16 +228,50 @@ export function ArticleEditorForm({ article }: { article?: EditableArticle }) {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div>
           <label htmlFor="category" className="block font-mono text-xs uppercase tracking-widest text-vob-muted">
-            Category (slug)
+            Category
           </label>
-          <input
+          <select
             id="category"
             required
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            placeholder="national, sports, technology…"
+            value={isCustomCategory ? "__custom__" : category}
+            onChange={(e) => {
+              if (e.target.value === "__custom__") {
+                setIsCustomCategory(true);
+                setCategory("");
+              } else {
+                setIsCustomCategory(false);
+                setCategory(e.target.value);
+              }
+            }}
             className="mt-1 w-full border border-vob-border bg-vob-bg px-3 py-2 text-vob-ink focus:border-vob-accent focus:outline-none"
-          />
+          >
+            <option value="" disabled>
+              Select a category…
+            </option>
+            {CATEGORY_SLUGS.map((slug) => (
+              <option key={slug} value={slug}>
+                {categoryLabel(slug, "en")}
+              </option>
+            ))}
+            <option value="__custom__">+ Add new category…</option>
+          </select>
+          {isCustomCategory && (
+            <input
+              id="category-custom"
+              required
+              autoFocus
+              value={category}
+              onChange={(e) => setCategory(slugify(e.target.value))}
+              placeholder="e.g. climate, health, opinion…"
+              className="mt-2 w-full border border-vob-border bg-vob-bg px-3 py-2 font-mono text-sm text-vob-ink focus:border-vob-accent focus:outline-none"
+            />
+          )}
+          {isCustomCategory && (
+            <p className="mt-1 text-xs text-vob-faint">
+              New categories won&apos;t appear in the main navigation or homepage rails
+              automatically, but their articles are filterable at /vault/{category || "…"}.
+            </p>
+          )}
         </div>
         <div>
           <label htmlFor="author" className="block font-mono text-xs uppercase tracking-widest text-vob-muted">

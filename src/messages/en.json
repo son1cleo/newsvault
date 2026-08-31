@@ -1,7 +1,7 @@
 {
   "site": {
-    "name": "Voice of Bangla",
-    "nameEn": "Voice of Bangla",
+    "name": "Voice of Time",
+    "nameEn": "Voice of Time",
     "tagline": "On the path of truth, beside the people"
   },
   "nav": {
@@ -42,10 +42,10 @@
   },
   "footer": {
     "about": "About Us",
-    "aboutBody": "Voice of Bangla is an independent news archive, where every story is preserved on its real date.",
+    "aboutBody": "Voice of Time is an independent news archive, where every story is preserved on its real date.",
     "contact": "Contact",
     "social": "Follow Us",
-    "editorCredit": "Editor-in-Chief: Editorial Board, Voice of Bangla",
+    "editorCredit": "Editor-in-Chief: Editorial Board, Voice of Time",
     "rights": "All rights reserved."
   },
   "common": {
