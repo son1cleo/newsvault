@@ -41,6 +41,7 @@ async function main() {
     const blob = await put(`uploads/demo-${row.slug}.svg`, svg, {
       access: "public",
       contentType: "image/svg+xml",
+      allowOverwrite: true,
     });
 
     await db.update(articles).set({ coverImageUrl: blob.url }).where(eq(articles.id, row.id));
