@@ -9,6 +9,10 @@ import { formatDateline, monthNameLocalized, localizedNumber } from "@/lib/date-
 import { categoryLabel } from "@/lib/category-labels";
 import { CategoryTag } from "@/components/vob/category-tag";
 
+// Queries the DB for the article — must render per-request, not get
+// baked in at build time (articles publish continuously).
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: {

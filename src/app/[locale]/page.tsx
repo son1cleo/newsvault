@@ -8,6 +8,10 @@ import { getRecentArticles } from "@/lib/articles";
 
 const RAIL_CATEGORIES = ["national", "sports", "entertainment", "technology", "lifestyle"];
 
+// Queries the DB for the latest articles — must render per-request, not
+// get baked in at build time (new articles publish continuously).
+export const dynamic = "force-dynamic";
+
 export default async function HomePage({
   params,
 }: {
